@@ -1,0 +1,6 @@
+# minimal size of new data (in days) sufficient to retrain the model 
+retraining_window_days: 7
+# name of the date index column in the featurized dataset
+date_index_column_name: date
+# name of the target column in the featurized dataset
+target_column_name: Balance
