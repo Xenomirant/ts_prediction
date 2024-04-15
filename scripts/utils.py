@@ -21,6 +21,7 @@ from statsmodels.tsa.stattools import adfuller, kpss
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 from plotly import graph_objs as go
 from plotly.subplots import make_subplots
+from sklearn import metrics
 
 plt.rcParams.update({'figure.figsize': (10, 5), 'figure.dpi': 100})
 
@@ -151,7 +152,7 @@ def timeseriesCVscore(x):
     # Возвращаем средний квадрат ошибки по вектору ошибок 
     return np.mean(np.array(errors))
 
-def stationarity_check(target)
+def stationarity_check(target):
     result = adfuller(target, autolag='AIC')
 
     print(f'ADF Statistic: {result[0]}')
@@ -159,3 +160,24 @@ def stationarity_check(target)
     for key, value in result[4].items():
         print('Critial Values:')
         print(f'   {key}, {value}')
+        
+def getMutualInfos(data,labels):
+    '''
+    This function takes as input the data and labels and returns the mutual information of each feature 
+    with the labels in a np.dnarray of length d
+    
+    INPUTS:
+    - data is a 2-dimensional numpy.ndarray where rows are examples and columns are features
+    - labels is a 1-dimansional numpy.ndarray giving the label of each example in data
+    
+    OUPUT:
+    - a 1-dimensional numpy.ndarray of length d (where d is the number of features) 
+      with the mutual information of each feature with the label
+    '''
+    M,d=data.shape
+    mutualInfos=np.zeros(d)
+    # for each feature
+    for f in range(d):
+        # we calculate the mutual information of the feature with the labels
+        mutualInfos[f]=metrics.mutual_info_score(data[:,f],labels)
+    return mutualInfos
